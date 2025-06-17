@@ -1,0 +1,20 @@
+{
+  "/_not-found": "app/_not-found.js",
+  "/api/users/delete/route": "app/api/users/delete/route.js",
+  "/page": "app/page.js",
+  "/categories/page": "app/categories/page.js",
+  "/login/page": "app/login/page.js",
+  "/music/page": "app/music/page.js",
+  "/calendar/page": "app/calendar/page.js",
+  "/forgot-password/page": "app/forgot-password/page.js",
+  "/activities/page": "app/activities/page.js",
+  "/settings/page": "app/settings/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/projects/page": "app/projects/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/users/page": "app/users/page.js",
+  "/projects/[id]/page": "app/projects/[id]/page.js",
+  "/users/[id]/page": "app/users/[id]/page.js",
+  "/users/new/page": "app/users/new/page.js",
+  "/projects/create/page": "app/projects/create/page.js"
+}
