@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Calendar events collection
+    match /calendarEvents/{eventId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && 
+        request.resource.data.createdBy == request.auth.uid;
+      allow update, delete: if isAuthenticated() && (
+        resource.data.createdBy == request.auth.uid ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // Projects collection
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Partnerships collection
+    match /partnerships/{partnershipId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Music collection
+    match /music/{musicId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Shop items collection
+    match /shopItems/{itemId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && isOwner(resource.data.userId);
+    }
+    
+    // Messages collection
+    match /messages/{messageId} {
+      allow read: if isAuthenticated();
+      allow create: if true;
+      allow update: if isAuthenticated() && 
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'readAt', 'archivedAt']);
+      allow delete: if isAuthenticated();
+    }
+    
+    // Posts collection
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && isOwner(resource.data.userId);
+    }
+    
+    // User profiles
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isOwner(userId);
+    }
+    
+    // Activities collection
+    match /activities/{activityId} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // FiveM API Keys collection
+    match /fivemApiKeys/{keyId} {
+      allow read: if isAuthenticated() && (
+        isOwner(resource.data.userId) ||
+        request.auth.token.admin == true
+      );
+      
+      allow create: if isAuthenticated() && 
+        request.resource.data.keys().hasAll(['scriptName', 'key', 'expiryDate', 'status', 'userId']) &&
+        isOwner(request.resource.data.userId);
+      
+      allow update: if isAuthenticated() && 
+        isOwner(resource.data.userId) &&
+        request.resource.data.userId == resource.data.userId &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'key', 'updatedAt']);
+      
+      allow delete: if isAuthenticated() && isOwner(resource.data.userId);
+    }
+    
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+} 
