@@ -124,7 +124,7 @@ export default function CategoryModal({ category, isOpen, onClose, onSuccess }: 
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Enter category name"
                 required
-              />
+                    />
             </div>
 
             <div>
@@ -138,7 +138,7 @@ export default function CategoryModal({ category, isOpen, onClose, onSuccess }: 
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Enter category description"
                 rows={4}
-              />
+                    />
             </div>
 
             <div className="flex justify-end gap-4">

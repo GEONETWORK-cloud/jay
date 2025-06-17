@@ -230,7 +230,7 @@ function createSlug(name: string): string {
     .replace(/\-\-+/g, '-')   // Replace multiple - with single -
     .replace(/^-+/, '')       // Trim - from start of text
     .replace(/-+$/, '');      // Trim - from end of text
-}
+} 
 
 export async function addCategory(categoryData: CategoryInput): Promise<string> {
   return createCategory(categoryData);
